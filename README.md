@@ -104,13 +104,50 @@ data-analysis-multiagents/
 │   │   ├── __init__.py
 │   │   └── streamlit_app.py   # Streamlit UI implementation
 │   └── __init__.py
+├── .dockerignore              # Files to exclude from Docker image
+├── .gitignore                 # Files to exclude from Git
 ├── app.py                     # Main entry point
 ├── Dockerfile                 # Docker configuration
-├── .dockerignore              # Files to exclude from Docker image
+├── LICENSE
 ├── Pipfile                    # Dependencies
 ├── Pipfile.lock
+├── pyproject.toml             # Project configuration including ruff
+├── setup.py                   # Python package information
+├── version.py                 # Python script with app version
 └── README.md
 ```
+
+### Code Quality
+
+This project uses [ruff](https://github.com/charliermarsh/ruff) for linting and code quality checks. Ruff is a fast Python linter written in Rust that combines the functionality of multiple Python linters.
+
+#### Running Ruff
+
+To run ruff on the project:
+
+```bash
+# Install ruff if not already installed
+pip install ruff
+
+# Run format
+ruff format
+
+# Run linting with auto-fix
+ruff check --fix
+```
+
+#### Ruff Configuration
+
+The ruff configuration is defined in `pyproject.toml` and includes:
+
+- PEP 8 style checking
+- Import sorting
+- Docstring validation (Google style)
+- Security checks
+- Type annotation checks
+- And more
+
+See the `pyproject.toml` file for the complete configuration.
 
 ## License
 

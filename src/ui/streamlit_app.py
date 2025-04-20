@@ -1,12 +1,12 @@
-# Streamlit app for the Data Analysis Chatbot
+"""Streamlit app for the Data Analysis Chatbot."""
 
 import os
-import streamlit as st
 import sys
 
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
-from src.backend.main import DataAnalysisBot
+import streamlit as st
 
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
+from src.backend.main import DataAnalysisBot
 
 st.set_page_config(
     page_title="Data Analysis Chatbot",
@@ -29,14 +29,17 @@ def handle_file_upload() -> None:
     """Handle file upload and process it with the bot."""
     uploaded_file = st.session_state.uploaded_file
     if uploaded_file is not None:
-        file_content = uploaded_file.getvalue()
-
         file_info = st.session_state.bot.load_csv(uploaded_file, uploaded_file.name)
 
         st.session_state.file_info = file_info
         st.session_state.dataframe = st.session_state.bot.current_dataframe
 
-        st.session_state.messages.append({"role": "system", "content": f"CSV file '{uploaded_file.name}' has been loaded."})
+        st.session_state.messages.append(
+            {
+                "role": "system",
+                "content": f"CSV file '{uploaded_file.name}' has been loaded.",
+            }
+        )
 
 
 def handle_chat_input() -> None:
@@ -63,10 +66,10 @@ def main() -> None:
     with col1:
         st.subheader("Upload Data")
         st.file_uploader(
-            "Upload a CSV file", 
-            type=["csv"], 
+            "Upload a CSV file",
+            type=["csv"],
             key="uploaded_file",
-            on_change=handle_file_upload
+            on_change=handle_file_upload,
         )
 
         if st.session_state.file_info:
@@ -95,7 +98,7 @@ def main() -> None:
             "Ask a question about your data...",
             key="user_input",
             on_submit=handle_chat_input,
-            disabled=st.session_state.dataframe is None
+            disabled=st.session_state.dataframe is None,
         )
 
         if st.session_state.dataframe is None:

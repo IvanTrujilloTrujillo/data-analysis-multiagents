@@ -1,6 +1,6 @@
-# Setup file
+"""Setup Python package file."""
 
-from setuptools import setup, find_packages
+from setuptools import find_packages, setup
 
 from version import __version__
 

@@ -1,13 +1,14 @@
-# Entry point to launch the Data Analysis Chatbot application
+"""Entry point to launch the Data Analysis Chatbot application."""
 
 import os
-import sys
+import shutil
 import subprocess
+import sys
 
 
 def main() -> None:
-    """
-    Main entry point for running the Data Analysis Chatbot application.
+    """Main entry point for running the Data Analysis Chatbot application.
+
     This script launches the Streamlit UI.
     """
     current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -21,13 +22,24 @@ def main() -> None:
     print("Loading Streamlit interface...")
 
     try:
-        subprocess.run(["streamlit", "run", streamlit_app_path], check=True)
+        streamlit_path = shutil.which("streamlit")
+        if streamlit_path is None:
+            print("Error: Streamlit not found. "
+                  "Please make sure Streamlit is installed.")
+            print("You can install it with: pip install streamlit")
+            sys.exit(1)
+
+        if not os.path.isfile(streamlit_path):
+            print(f"Error: Invalid streamlit executable path: {streamlit_path}")
+            sys.exit(1)
+
+        subprocess.run(  # noqa: S603
+            [streamlit_path, "run", streamlit_app_path],
+            check=True,
+            shell=False
+        )
     except subprocess.CalledProcessError as e:
         print(f"Error running Streamlit app: {e}")
-        sys.exit(1)
-    except FileNotFoundError:
-        print("Error: Streamlit not found. Please make sure Streamlit is installed.")
-        print("You can install it with: pip install streamlit")
         sys.exit(1)
 
 
