@@ -43,6 +43,8 @@ The application consists of two main components:
 
 ## Usage
 
+### Running Locally
+
 1. Activate the virtual environment:
    ```
    pipenv shell
@@ -61,6 +63,22 @@ The application consists of two main components:
    - Ask for summaries and statistics
    - Request specific analyses
    - Get insights about patterns and correlations
+
+### Using Docker
+
+1. Build the Docker image:
+   ```
+   docker build -t data-analysis-chatbot .
+   ```
+
+2. Run the container with your OpenAI API key:
+   ```
+   docker run -p 8501:8501 -e OPENAI_API_KEY=your_api_key_here data-analysis-chatbot
+   ```
+
+3. Open your browser and navigate to http://localhost:8501
+
+4. Use the application as described above
 
 ## Example Questions
 
@@ -87,6 +105,8 @@ data-analysis-multiagents/
 │   │   └── streamlit_app.py   # Streamlit UI implementation
 │   └── __init__.py
 ├── app.py                     # Main entry point
+├── Dockerfile                 # Docker configuration
+├── .dockerignore              # Files to exclude from Docker image
 ├── Pipfile                    # Dependencies
 ├── Pipfile.lock
 └── README.md
