@@ -1,7 +1,10 @@
 # Streamlit app for the Data Analysis Chatbot
 
+import os
 import streamlit as st
+import sys
 
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
 from src.backend.main import DataAnalysisBot
 
 
@@ -27,12 +30,12 @@ def handle_file_upload() -> None:
     uploaded_file = st.session_state.uploaded_file
     if uploaded_file is not None:
         file_content = uploaded_file.getvalue()
-        
+
         file_info = st.session_state.bot.load_csv(uploaded_file, uploaded_file.name)
-        
+
         st.session_state.file_info = file_info
         st.session_state.dataframe = st.session_state.bot.current_dataframe
-        
+
         st.session_state.messages.append({"role": "system", "content": f"CSV file '{uploaded_file.name}' has been loaded."})
 
 
@@ -41,12 +44,10 @@ def handle_chat_input() -> None:
     user_message = st.session_state.user_input
     if user_message:
         st.session_state.messages.append({"role": "user", "content": user_message})
-        
+
         bot_response = st.session_state.bot.chat(user_message)
-        
+
         st.session_state.messages.append({"role": "assistant", "content": bot_response})
-        
-        st.session_state.user_input = ""
 
 
 def main() -> None:
@@ -55,9 +56,9 @@ def main() -> None:
     st.markdown("""
     Upload a CSV file and chat with the AI to analyze your data.
     """)
-    
+
     col1, col2 = st.columns([2, 3])
-    
+
     # Left column: File upload and data preview
     with col1:
         st.subheader("Upload Data")
@@ -67,19 +68,19 @@ def main() -> None:
             key="uploaded_file",
             on_change=handle_file_upload
         )
-        
+
         if st.session_state.file_info:
             with st.expander("File Information", expanded=True):
                 st.text(st.session_state.file_info)
-        
+
         if st.session_state.dataframe is not None:
             st.subheader("Data Preview")
             st.dataframe(st.session_state.dataframe.head(10), use_container_width=True)
-    
+
     # Right column: Chat interface
     with col2:
         st.subheader("Chat with the AI")
-        
+
         chat_container = st.container(height=500)
         with chat_container:
             for message in st.session_state.messages:
@@ -89,14 +90,14 @@ def main() -> None:
                     st.chat_message("assistant").write(message["content"])
                 elif message["role"] == "system":
                     st.chat_message("system").write(message["content"])
-        
+
         st.chat_input(
             "Ask a question about your data...",
             key="user_input",
             on_submit=handle_chat_input,
             disabled=st.session_state.dataframe is None
         )
-        
+
         if st.session_state.dataframe is None:
             st.info("Please upload a CSV file to start chatting.")
         else:

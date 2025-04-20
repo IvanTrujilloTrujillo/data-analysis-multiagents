@@ -1,9 +1,9 @@
-import os
-from typing import List, Dict, Any, Optional
-import pandas as pd
 from dotenv import load_dotenv
+from io import StringIO
 from langchain_core.messages import HumanMessage, AIMessage
 from langchain_openai import ChatOpenAI
+import pandas as pd
+from typing import List, Dict, Any, Optional
 
 
 load_dotenv()
@@ -39,7 +39,7 @@ class DataAnalysisBot:
             self.current_dataframe = pd.read_csv(file_content)
             
             # Generate information about the dataframe
-            info_buffer = pd.io.StringIO()
+            info_buffer = StringIO()
             self.current_dataframe.info(buf=info_buffer)
             
             # Get basic statistics
